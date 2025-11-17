@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+    <title>Webcam Mirror</title>
+    <meta name="author" content="Kundan Singh"/>
+    <meta name="keywords" content="WebRTC,Developer"/>
+    <meta name="description" content="Simple example of getUserMedia for video"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <style type="text/css">
+        body { margin: 0; padding: 0 }
+        video { 
+            position: absolute; width: 100%; height: 100%; object-fit: cover;
+            transform: scaleX(-1);
+        }
+    </style>
+    <script type="text/javascript">
+        window.onload = async () => {
+            document.querySelector("video").onclick = async event => {
+                const video = event.currentTarget;
+                video.paused ? video.play() : video.pause();
+
+                // // alternatively use the following code to stop and re-start media
+                // if (video.paused) {
+                //     const stream = await navigator.mediaDevices.getUserMedia({video: true});
+                //     document.querySelector("video").srcObject = stream;
+                //     video.play();
+                // } else {
+                //     video.pause();
+                //     video.srcObject.getVideoTracks()[0].stop();
+                // }
+            };
+
+            const stream = await navigator.mediaDevices.getUserMedia({video: true});
+            document.querySelector("video").srcObject = stream;
+        };
+    </script>
+</head>
+<body>
+    <video autoplay muted></video>
+</body>
+</html>
