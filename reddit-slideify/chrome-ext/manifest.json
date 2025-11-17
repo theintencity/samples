@@ -1,0 +1,28 @@
+{
+   "action": {
+      "default_icon": "icon32.png"
+   },
+   "background": {
+      "service_worker": "background.js"
+   },
+   "content_scripts": [ {
+      "css": [ "content.css" ],
+      "js": [ "content.js" ],
+      "all_frames": false,
+      "matches": [ "https://*.reddit.com/*" ],
+      "run_at": "document_end"
+   } ],
+   "description": "Creates a slide-show of images on an image-oriented reddit page such as ProgrammerHumor, and allows you to navigate using the arrow keys.",
+   "icons": {
+      "128": "icon128.png",
+      "16": "icon16.png",
+      "32": "icon32.png",
+      "48": "icon48.png"
+   },
+   "manifest_version": 3,
+   "name": "Slideify images on reddit",
+   "permissions": [ "tabs", "activeTab", "declarativeContent" ],
+   "short_name": "Slideify subreddit",
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "1.0"
+}

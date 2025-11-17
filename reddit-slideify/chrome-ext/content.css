@@ -1,0 +1,34 @@
+body[slideify] {
+    visibility: visible !important;
+    overflow: hidden !important;
+    pointer-events: all !important;
+}
+body[slideify] img[slideify] {
+    position: fixed !important;
+    left: 0px !important; top: 0px !important; width: 100% !important; height: 100% !important;
+    z-index: 2147483647 !important;
+    visibility: visible !important;
+    overflow: hidden !important;
+    object-fit: contain !important;
+    background: black !important;
+    pointer-events: none !important;
+}
+body[slideify] :not(img), 
+body[slideify] img:not([slideify]) {
+    z-index: auto !important;
+    visibility: hidden !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
+    /* needed for position: fixed to work correctly */
+    transform: none !important; transform-style: initial !important;
+    perspective: none !important;
+    filter: none !important;
+    /* needed if ancestor has opacity 0 */
+    opacity: initial !important;
+}
+
+/* to address visibility set in shadow dom */
+body[slideify] flex-left-nav-container {
+    display: none !important;
+}
+
