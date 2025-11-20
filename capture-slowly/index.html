@@ -62,7 +62,8 @@
         set_state("idle");
 
         async function start_preview() {
-            let stream = await navigator.mediaDevices.getUserMedia({video: true});
+            const constraints = {video: {width: 1280, height: 720}};
+            let stream = await navigator.mediaDevices.getUserMedia(constraints);
             $("video").srcObject = stream;
             set_state("preview");
         }
