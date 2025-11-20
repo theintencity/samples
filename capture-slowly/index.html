@@ -1,0 +1,173 @@
+<!doctype html>
+<html>
+<head>
+    <title>Capture Slowly</title>
+    <meta name="author" content="Kundan Singh"/>
+    <meta name="keywords" content="WebRTC,image capture"/>
+    <meta name="description" content="Capture an image from webcam, slowly, for various effects and funny gestures."/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <style type="text/css">
+        body { margin: 0; padding: 0; }
+        body, div.content, video, canvas { position: absolute; width: 100%; height: 100%; }
+        video {  object-fit: cover; transform: scaleX(-1); }
+        body:not([state="captured"]) canvas { transform: scaleX(-1); }
+        body[state="preview"] canvas { visibility: hidden; }
+        body:not([state="preview"]) video { visibility: hidden; }
+
+
+        div.buttons { 
+            position: absolute; bottom: 10px; left: 0px; right: 0px;
+            display: flex; flex-flow: row nowrap; justify-content: center;
+        }
+        button { display: none; position: relative; cursor: pointer; }
+
+        body[state="preview"] button#start,
+        body[state="capturing"] button#start,
+        body[state="paused"] button#start,
+        body[state="captured"] button#download,
+        body[state="capturing"] button#clear,
+        body[state="paused"] button#clear,
+        body[state="captured"] button#clear { display: block; }
+
+    </style>
+</head>
+<body>
+    <div class="content">
+        <video autoplay muted></video>
+        <canvas></canvas>
+    </div>
+
+    <div class="buttons">
+        <button id="start" title="start or pause slow capture">Start</button>
+        <button id="download" title="download slow captured image">Download</button>
+        <button id="clear" title="stop slow capture and discard image">Clear</button>
+    </div>
+
+    <script type="text/javascript">
+        const $ = selector => document.querySelector(selector);
+
+        const video = $("video"), canvas = $("canvas");
+
+        let state; // idle, preview, capturing, paused, captured
+
+        function set_state(value) {
+            state = value;
+            document.body.setAttribute("state", value);
+        };
+
+        set_state("idle");
+
+        async function start_preview() {
+            let stream = await navigator.mediaDevices.getUserMedia({video: true});
+            $("video").srcObject = stream;
+            set_state("preview");
+        }
+
+        if (state == "idle") {
+            start_preview().catch();
+        }
+
+        $("button#start").onclick = event => {
+            if (state == "preview") {
+                set_state("capturing");
+                $("button#start").innerText = "Pause";
+                start_interval();
+            } else if (state == "capturing") {
+                set_state("paused");
+                $("button#start").innerText = "Start";
+            } else if (state == "paused") {
+                set_state("capturing");
+                $("button#start").innerText = "Pause";
+            }
+        };
+
+        $("button#download").onclick = event => {
+            const a = document.createElement("a");
+            a.style.display = "none";
+            a.href = canvas.toDataURL("image/jpeg", 0.95);
+            a.download = "image-" + ("" + Math.random()).substr(2,3) + ".jpg";
+            document.body.append(a);
+            a.click();
+            setTimeout(() => {
+                document.body.removeChild(a);
+            }, 100);
+        };
+
+        $("button#clear").onclick = async event => {
+            if (state == "captured") {
+                await start_preview();
+            } else if (state == "capturing" || state == "paused") {
+                set_state("preview");
+            }
+            $("button#start").innerText = "Start";
+            stop_interval();
+        }
+
+        let interval = null;
+        let index = 0;
+        const w = 3;
+        let CW, CH, VW, VH, CR, VR; // canvas and video width/height and ratio
+
+
+        function stop_interval() {
+            if (interval) {
+                clearInterval(interval);
+                internal = null;
+            }
+        }
+        function start_interval() {
+            if (!interval) {
+                index = CW = canvas.offsetWidth;
+                CH = canvas.offsetHeight;
+                CR = CW/CH;
+                VW = video.videoWidth;
+                VH = video.videoHeight;
+                VR = VW/VH;
+                canvas.width = CW;
+                canvas.height = CH;
+                console.log(CW, CH, CR, VW, VH, VR);
+                setInterval(periodic_capture, 1000/30);
+            }
+        }
+
+        const ctx = $("canvas").getContext("2d");
+
+        function periodic_capture() {
+            if (state == "capturing" || state == "paused") {
+                let sx, sy, sw, sh;
+                if (VR >= CR) {
+                    sy = 0; sh = VH;
+                    sw = Math.round(VH * CR);
+                    sx = Math.round(VW/2 - sw/2);
+                } else {
+                    sx = 0; sw = VW;
+                    sh = Math.round(VW / CR);
+                    sy = Math.round(VH/2 - sh/2);
+                }
+                //console.log(sx, sy, sw, sh);
+                const r = sw/CW;
+                ctx.drawImage(video, sx, sy, r*(index+2), sh, 0, 0, index+2, CH);
+
+                ctx.strokeStyle = "yellow";
+                ctx.lineWidth = w;
+                ctx.beginPath();
+                ctx.moveTo(index-w/2, 0);
+                ctx.lineTo(index-w/2, CH);
+                ctx.stroke();
+
+                if (state == "capturing") {
+                    index -= 1;
+                    if (index <= -2) {
+                        set_state("captured");
+                        const stream = $("video").srcObject;
+                        if (stream) {
+                            stream.getVideoTracks()[0].stop();
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
