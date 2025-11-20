@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Camera</title>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline'" />
+
+    <style type="text/css">
+body { 
+    position: absolute; 
+    width: 100%; height: 100%; padding: 0; margin: 0;
+    user-select: none; 
+}
+div.video { 
+    position: relative;
+    left: -1%; top: -1%; width: calc(100% - 20px); height: calc(100% - 20px); margin: 10px;
+    border-radius: 50%;
+    box-shadow: 0 0 10px 1px rgba(0,0,0,0.3);
+    overflow: hidden;
+}
+video { 
+    position: absolute; 
+    width: 100%; height: 100%;
+    object-fit: cover;
+}
+div.video, video {
+    -webkit-app-region: drag;
+}
+div.buttons {
+    position: absolute;
+    bottom: 10px; left: 10px; right: 10px;
+    display: flex; flex-flow: row nowrap; justify-content: center; align-items: center; gap: 1em;
+}
+body:not(:hover) div.buttons {
+    display: none;
+}
+div.buttons button {
+    position: relative;
+    width: 20px; height: 20px;
+    font-size: 20px; line-height: 20px;
+    background: none; border: none;
+    color: white; outline: none; filter: drop-shadow(0 0 3px black);
+    cursor: pointer;
+}
+    </style>
+
+    <script type="text/javascript">
+
+function $(selector) {
+    return document.querySelector(selector);
+}
+
+function initialize() {
+
+    $("button#close").onclick = () => {
+        window.close();
+    }
+
+    navigator.mediaDevices.enumerateDevices()
+        .then(devices => {
+            const constraints = {video: {width: 320, height: 240}};
+            // prefer default on osx
+            let found = [...devices].find(d => d.kind == "videoinput" && d.label.startsWith("FaceTime"));
+            if (location.search.substring(1)) {
+                const arg = decodeURIComponent(location.search.substring("?"));
+                if (arg !== "stop") {
+                    found = [...devices].find(d => d.kind == "videoinput" && d.label.startsWith(arg));
+                }
+            }
+            if (found) {
+                constraints.video.deviceId = found.deviceId;
+            }
+            navigator.mediaDevices.getUserMedia(constraints)
+                .then(stream => {
+                    $("video").srcObject = stream;
+                })
+                .catch(error => console.error("exception", error));   
+        });
+}
+
+window.onload = initialize;
+
+    </script>
+</head>
+<body state="idle">
+    <div class="video"><video autoplay muted></video></div>
+    <div class="buttons"><button id="close">&times;</button></div>
+</body>
+</html>
