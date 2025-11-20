@@ -18,9 +18,12 @@
 
         div.buttons { 
             position: absolute; bottom: 10px; left: 0px; right: 0px;
-            display: flex; flex-flow: row nowrap; justify-content: center;
+            display: flex; flex-flow: row nowrap; justify-content: center; gap: 2em;
         }
-        button { display: none; position: relative; cursor: pointer; }
+        button {
+            display: none; position: relative; cursor: pointer; 
+            font-size: 2em;
+        }
 
         body[state="preview"] button#start,
         body[state="capturing"] button#start,
