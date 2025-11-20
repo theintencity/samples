@@ -2,7 +2,11 @@
     "name": "SelfPreview",
     "version": "1.0.0",
     "description": "show self webcam preview",
-    "author": "Kundan Singh",
+    "author": {
+        "name": "Kundan Singh",
+        "email": "theintencity.com",
+        "url": "https://kundansingh.com"
+    },
     "main": "main.js",
     "scripts": {
         "start": "electron-forge start",
