@@ -106,7 +106,7 @@
 
         let interval = null;
         let index = 0;
-        const w = 3;
+        const w = 3; // width of vertical line
         let CW, CH, VW, VH, CR, VR; // canvas and video width/height and ratio
 
 
@@ -145,20 +145,18 @@
                     sh = Math.round(VW / CR);
                     sy = Math.round(VH/2 - sh/2);
                 }
-                //console.log(sx, sy, sw, sh);
-                const r = sw/CW;
-                ctx.drawImage(video, sx, sy, r*(index+2), sh, 0, 0, index+2, CH);
+                ctx.drawImage(video, sx, sy, index*sw/CW, sh, 0, 0, index, CH);
 
                 ctx.strokeStyle = "yellow";
                 ctx.lineWidth = w;
                 ctx.beginPath();
-                ctx.moveTo(index-w/2, 0);
-                ctx.lineTo(index-w/2, CH);
+                ctx.moveTo(index-w, 0);
+                ctx.lineTo(index-w, CH);
                 ctx.stroke();
 
                 if (state == "capturing") {
                     index -= 1;
-                    if (index <= -2) {
+                    if (index <= -1*w) {
                         set_state("captured");
                         const stream = $("video").srcObject;
                         if (stream) {
