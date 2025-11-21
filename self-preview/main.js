@@ -1,5 +1,6 @@
 const electron = require("electron")
-const { app, BrowserWindow, screen, ipcMain } = electron;
+const { app, BrowserWindow, screen, ipcMain, nativeImage } = electron;
+const path = require("path")
 
 // allow camera:... from browser
 
@@ -69,6 +70,9 @@ function createWindow() {
         roundedCorners: false, skipTaskbar: true, hasShadow: false, enableLargerThanScreen: true,
         webPreferences: { nodeIntegration: true, contextIsolation: false, nativeWindowOpen: true }
     };
+
+    // // does not seem to work
+    // options.icon = nativeImage.createFromPath(path.join(__dirname, "icon-color.png"));
 
     win = new BrowserWindow(options);
 

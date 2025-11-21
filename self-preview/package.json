@@ -30,6 +30,7 @@
     "config": {
         "forge": {
             "packagerConfig": {
+                "icon": "icon-color",
                 "protocols": [
                     {
                         "protocol": "camera",
@@ -42,11 +43,15 @@
                 {
                     "name": "@electron-forge/maker-squirrel",
                     "config": {
-                        "name": "SelfPreview"
+                        "name": "SelfPreview",
+                        "setupIcon": "./icon-color.ico"
                     }
                 },
                 {
                     "name": "@electron-forge/maker-zip",
+                    "config": {
+                        "icon": "./icon-color.icns"
+                    },
                     "platforms": [
                         "darwin"
                     ]
