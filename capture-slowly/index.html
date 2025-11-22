@@ -74,15 +74,21 @@
 
         $("button#start").onclick = event => {
             if (state == "preview") {
-                set_state("capturing");
-                $("button#start").innerText = "Pause";
-                start_interval();
+                $("button#start").innerText = "Starting...";
+                setTimeout(() => {
+                    set_state("capturing");
+                    $("button#start").innerText = "Pause";
+                    start_interval();
+                }, 1000);
             } else if (state == "capturing") {
                 set_state("paused");
                 $("button#start").innerText = "Start";
             } else if (state == "paused") {
-                set_state("capturing");
-                $("button#start").innerText = "Pause";
+                $("button#start").innerText = "Starting...";
+                setTimeout(() => {
+                    set_state("capturing");
+                    $("button#start").innerText = "Pause";
+                }, 1000);
             }
         };
 
