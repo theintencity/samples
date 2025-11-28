@@ -55,6 +55,7 @@
         let state; // idle, preview, capturing, paused, captured
 
         function set_state(value) {
+            console.log("state " + state + " => " + value);
             state = value;
             document.body.setAttribute("state", value);
         };
@@ -123,7 +124,7 @@
         function stop_interval() {
             if (interval) {
                 clearInterval(interval);
-                internal = null;
+                interval = null;
             }
         }
         function start_interval() {
@@ -137,7 +138,7 @@
                 canvas.width = CW;
                 canvas.height = CH;
                 console.log(CW, CH, CR, VW, VH, VR);
-                setInterval(periodic_capture, 1000/30);
+                interval = setInterval(periodic_capture, 1000/30);
             }
         }
 
@@ -172,6 +173,7 @@
                         if (stream) {
                             stream.getVideoTracks()[0].stop();
                         }
+                        stop_interval();
                     }
                 }
             }
