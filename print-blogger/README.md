@@ -3,12 +3,11 @@
 This Chrome extension allows me to create a printable PDF of my 
 blog articles such as 
 [WebRTC topology](https://blog.kundansingh.com/2024/06/a-deep-dive-into-webrtc-topology.html),
-[generic video-io](https://blog.kundansingh.com/2019/06/a-generic-video-io-component-for-webrtc.html) or
+[Generic Video-IO](https://blog.kundansingh.com/2019/06/a-generic-video-io-component-for-webrtc.html)
 or [Lessons in web software](https://blog.kundansingh.com/2019/06/lessons-in-web-software-development.html)
 hosted on Google blogspot or blogger. It should work on my other blog pages too.
 
-Just open any of my blog pages, and click on the icon of the extension,
-after installation.
+After installation, just open any of my blog pages, and click on the icon of the extension.
 
 ### Install
 
