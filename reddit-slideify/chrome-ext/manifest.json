@@ -21,7 +21,7 @@
    },
    "manifest_version": 3,
    "name": "Slideify images on reddit",
-   "permissions": [ "tabs", "activeTab", "declarativeContent" ],
+   "permissions": [ "activeTab", "declarativeContent" ],
    "short_name": "Slideify subreddit",
    "update_url": "https://clients2.google.com/service/update2/crx",
    "version": "1.0"
