@@ -10,6 +10,9 @@ chrome.runtime.onInstalled.addListener(() => {
             conditions: [
                 new chrome.declarativeContent.PageStateMatcher({
                     pageUrl: {hostSuffix: '.reddit.com', schemes: ["https"]},
+                }),
+                new chrome.declarativeContent.PageStateMatcher({
+                    pageUrl: {hostSuffix: 'xkcd.com', schemes: ["https"]},
                 })
             ],
             actions: [new chrome.declarativeContent.ShowAction()],

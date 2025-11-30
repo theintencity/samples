@@ -9,7 +9,7 @@
       "css": [ "content.css" ],
       "js": [ "content.js" ],
       "all_frames": false,
-      "matches": [ "https://*.reddit.com/*" ],
+      "matches": [ "https://*.reddit.com/*", "https://xkcd.com/*" ],
       "run_at": "document_end"
    } ],
    "description": "Creates a slide-show of images on an image-oriented reddit page such as ProgrammerHumor, and allows you to navigate using the arrow keys.",

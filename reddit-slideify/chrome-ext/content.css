@@ -3,17 +3,26 @@ body[slideify] {
     overflow: hidden !important;
     pointer-events: all !important;
 }
-body[slideify] img[slideify] {
+body[slideify] img[slideify], body[slideify] div[slideify] {
     position: fixed !important;
-    left: 0px !important; top: 0px !important; width: 100% !important; height: 100% !important;
-    z-index: 2147483647 !important;
     visibility: visible !important;
     overflow: hidden !important;
-    object-fit: contain !important;
     background: black !important;
     pointer-events: none !important;
 }
-body[slideify] :not(img), 
+body[slideify] img[slideify] {
+    left: 0px !important; top: 0px !important; width: 100% !important; height: 100% !important;
+    z-index: 2147483646 !important;
+    object-fit: contain !important;
+}
+body[slideify] div[slideify] {
+    left: 0px !important; top: 0px !important;
+    color: white !important;
+    font: 20px Arial !important;
+    opacity: 0.5 !important;
+    z-index: 2147483647 !important;
+}
+body[slideify] :not(img):not(div[slideify]), 
 body[slideify] img:not([slideify]) {
     z-index: auto !important;
     visibility: hidden !important;
